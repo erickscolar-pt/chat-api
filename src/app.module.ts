@@ -4,7 +4,7 @@ import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/chat'),
+    MongooseModule.forRoot("mongodb://chat_admin:%40ContaPlus%24.6487@147.93.33.226:27017/chat"),
     ChatModule,
   ],
   controllers: [],
