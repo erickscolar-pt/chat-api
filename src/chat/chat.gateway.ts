@@ -29,9 +29,6 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
     client.on('register', async ({ userId, role, consultorId, clienteId, name }) => {
       const connectionId: string = role === 'cliente' ? clienteId : consultorId;
-      console.log(clienteId)
-      console.log(consultorId)
-      //this.clients.set(connectionId, { socketId: String(userId), role });
       this.logger.log(`Map antes de adicionar: ${JSON.stringify([...this.clients])}`);
       this.clients.set(connectionId, { socketId: client.id, role });
       this.logger.log(`Map depois de adicionar: ${JSON.stringify([...this.clients])}`);
@@ -113,6 +110,19 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     } else {
       client.emit('error', { message: result.message });
     }
+  }
+
+  @SubscribeMessage('getOnlineConsultores')
+  handleGetOnlineConsultores(client: Socket) {
+    // Filtra apenas consultores online
+    console.log(`Consultores online: ${JSON.stringify([...this.clients])}`);
+    const onlineConsultores = [...this.clients.entries()]
+      .filter(([, value]) => value.role === 'consultor')
+      .map(([consultorId, value]) => ({
+        consultorId,
+        socketId: value.socketId,
+      }));
+    this.server.emit('onlineConsultores', onlineConsultores);
   }
 
 }

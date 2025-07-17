@@ -5,7 +5,7 @@ import { CustomSocketIoAdapter } from './chat/CustomSocketIoAdapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.PORT || 3009;
+  const port = process.env.PORT || 3010;
   const date = new Date;
   const currentTime = date.toLocaleTimeString('pt-BR', { hour12: false });
 
